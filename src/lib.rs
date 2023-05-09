@@ -14,7 +14,7 @@ pub const NUCLTD: [char; 5_usize] = ['A', 'G', 'C', 'T', 'U'];
 /// as well.
 pub trait ProteinTranslate {
     type Item;
-    fn codon(&self) -> Result<Vec<Self::Item>>;
+    fn protein_translate(self) -> Result<Vec<Self::Item>>;
 }
 
 #[derive(Debug, Error)]
