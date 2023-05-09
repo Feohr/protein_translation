@@ -1,8 +1,12 @@
+mod codon;
+
+pub use codon::ProteinTranslate;
 use thiserror::Error;
 
-// To check for codons are valid
-const CODONS: [&'static str; 3_usize] = ["AUG", "UUU", "UCU"];
-
-
 #[derive(Debug, Error)]
-pub enum ProteinError {}
+pub enum ProteinError {
+    #[error("The given nucleotide is {0} invalid")]
+    InvalidNucleotide(char),
+    #[error("Codon need to have at least 3 nucleotides")]
+    InvalidCodonLen(String),
+}
