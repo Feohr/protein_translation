@@ -11,7 +11,7 @@ impl<'a> ProteinTranslate for &'a str {
 /// Program to take a stream of nucleotides and return vector of `&str` with valid codon length
 /// and nucleotides. The input needs to be `&str` to avoid issues with `String` conversions
 /// that is likely to happen with generics.
-fn codon(rna: &str) -> Result<Vec<&str>> {
+pub fn codon(rna: &str) -> Result<Vec<&str>> {
     let mut codon_vec = Vec::<&str>::new();
     // Iterating through chunks of codons, validating and pushing.
     for chunk in rna.as_bytes().chunks(CODON_CHUNK) {
@@ -35,3 +35,39 @@ fn codon(rna: &str) -> Result<Vec<&str>> {
     Ok(codon_vec)
 }
 
+#[cfg(test)]
+mod unit_str_tests {
+    use super::*;
+
+    #[test]
+    #[should_panic]
+    fn invalid_codon_err() {
+        let rna = "UUUAUGUUE";
+        codon(rna).unwrap();
+    }
+
+    #[test]
+    fn valid_codon() {
+        let rna = "AUGUUUUCUUAAAUG";
+        assert_eq!(vec!["AUG", "UUU", "UCU", "UAA", "AUG"], codon(rna).unwrap());
+    }
+
+    #[test]
+    #[should_panic]
+    fn invalid_nucleotide() {
+        let rna = "AUGUUUUIUUAOAUG";
+        codon(rna).unwrap();
+    }
+
+    #[test]
+    fn valid_nucleotide() {
+        let rna = "AUGUGUUCUUAAAUT";
+        codon(rna).unwrap();
+    }
+
+    #[test]
+    fn nucleotide_uppercase() {
+        let rna = "AUGuGUUcUUAaAUT";
+        codon(rna).unwrap();
+    }
+}
