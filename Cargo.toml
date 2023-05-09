@@ -1,6 +1,13 @@
 [package]
 name = "protein_translation"
+authors = ["Mohammed Rehaan (Feohr)"]
+description = """A crate to translate &str or String of RNA sequence with nucleotide into a \
+Vec<String> of their appropriate protein names."""
+repository = "https://github.com/Feohr/protein_translation"
+license = "MIT"
+readme = "README.md"
 version = "0.1.0"
+keywords = ["rna", "protein", "parser", "codon", "nucleotide"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
