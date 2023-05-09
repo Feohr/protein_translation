@@ -1,3 +1,24 @@
+//! # Protein Translation
+//!
+//! A simple library to parse `&str` and `String` types to create a `Vec<String>` with protein
+//! names.
+//!
+//! ## Example:
+//!
+//! ```rust
+//! use protein_translation::*;
+//!
+//! # fn main() {
+//! let rna = "AUGUUUUCUUAAAUG".to_string();
+//! let protein_vec = rna.protein_translate().unwrap();
+//! assert_eq!(
+//!     vec![
+//!         "Methionine".to_string(), "Phenylalanine".to_string(), "Serine".to_string()],
+//!         protein_vec,
+//!     );
+//! # }
+//! ```
+
 pub mod str;
 pub mod string;
 
@@ -11,7 +32,7 @@ pub(crate) const NUCLTD: [char; 5_usize] = ['A', 'G', 'C', 'T', 'U'];
 
 /// Trait is handled for both `&str` and `String` for ease of use. Could've used generics but it
 /// would be really tough to maintain and hard to manage. Moreover it can reduce code performance
-/// as well. Instead, the function can take both '&str' and `String` to return a `Vec<String>`.
+/// as well. Instead, the function can take both `&str` and `String` to return a `Vec<String>`.
 pub trait ProteinTranslate<'a>
 where
     Self: Sized + From<&'a str> + ToString + AsRef<str>,
@@ -40,8 +61,8 @@ where
         Ok(protein_vec)
     }
 
-    /// Program to take a stream of nucleotides and return vector of `string` with valid codon
-    /// length and nucleotides.
+    /// Program to take a stream of nucleotides and return `Vec<String>` with valid codon length
+    /// and nucleotides.
     fn codon(self) -> Result<Vec<String>> {
         let mut codon_vec = Vec::<String>::new();
         // Iterating through chunks of codons, validating and pushing.
