@@ -1,8 +1,8 @@
 pub mod str;
 pub mod string;
 
-use thiserror::Error;
 use anyhow::Result;
+use thiserror::Error;
 
 // Size of codon chunk.
 pub(crate) const CODON_CHUNK: usize = 3_usize;
@@ -12,7 +12,10 @@ pub(crate) const NUCLTD: [char; 5_usize] = ['A', 'G', 'C', 'T', 'U'];
 /// Trait is handled for both `&str` and `String` for ease of use. Could've used generics but it
 /// would be really tough to maintain and hard to manage. Moreover it can reduce code performance
 /// as well. Instead, the function can take both '&str' and `String` to return a `Vec<String>`.
-pub trait ProteinTranslate<'a> where Self: Sized + From<&'a str> + ToString + AsRef<str> {
+pub trait ProteinTranslate<'a>
+where
+    Self: Sized + From<&'a str> + ToString + AsRef<str>,
+{
     /// Function that takes a `&str` or `String` and returns a `Vec<String>` with the appropriate
     /// protein names.
     fn protein_translate(self) -> Result<Vec<String>> {
@@ -29,7 +32,7 @@ pub trait ProteinTranslate<'a> where Self: Sized + From<&'a str> + ToString + As
                 "UCU" | "UCC" | "UCA" | "UCG" => protein_vec.push("Serine".into()),
                 "UAU" | "UAC" => protein_vec.push("Tyrosine".into()),
                 "UGU" | "UGC" => protein_vec.push("Cysteine".into()),
-                "UGG"  => protein_vec.push("Tryptophan".into()),
+                "UGG" => protein_vec.push("Tryptophan".into()),
                 "UAA" | "UAG" | "UGA" => break,
                 _ => return Err(ProteinError::InvalidCodon(codon.into()).into()),
             }

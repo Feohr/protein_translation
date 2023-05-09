@@ -16,13 +16,16 @@ mod unit_str_tests {
     #[test]
     fn valid_codon() {
         let rna = "AUGUUUUCUUAAAUG";
-        assert_eq!(vec![
-            "AUG".to_string(),
-            "UUU".to_string(),
-            "UCU".to_string(),
-            "UAA".to_string(),
-            "AUG".to_string(),
-        ], rna.codon().unwrap());
+        assert_eq!(
+            vec![
+                "AUG".to_string(),
+                "UUU".to_string(),
+                "UCU".to_string(),
+                "UAA".to_string(),
+                "AUG".to_string(),
+            ],
+            rna.codon().unwrap()
+        );
     }
 
     #[test]
