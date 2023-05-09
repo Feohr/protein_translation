@@ -10,7 +10,7 @@ their appropriate protein names.
 A codon is a DNA or RNA sequence of three nucleotides (a trinucleotide) that forms a unit of
 genomic information encoding a particular amino acid or signaling the termination of protein
 synthesis (stop signals). DNA and the corresponding messenger RNA are made up of a series of bases
-(nucleotides). In RNA, these bases() are often labeled with the letters A, U, C, and G. A set of
+(nucleotides). In RNA, these bases are often labeled with the letters A, U, C, and G. A set of
 three bases makes up a codon.
 
 ## Example
