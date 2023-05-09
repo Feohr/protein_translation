@@ -4,7 +4,27 @@ use anyhow::Result;
 impl<'a> ProteinTranslate for &'a str {
     type Item = &'a str;
     fn protein_translate(self) -> Result<Vec<Self::Item>> {
-        todo!()
+        // Vector to hold the resulting proteins.
+        let mut protein_vec = Vec::<Self::Item>::new();
+        // To get the codon vector from a &str.
+        let mut codon_iter = codon(self)?.into_iter();
+
+        // Matching and entering the specific protein.
+        while let Some(ref codon) = codon_iter.next() {
+            match codon.to_uppercase().as_ref() {
+                "AUG" => protein_vec.push("Methionine"),
+                "UUU" | "UUC" => protein_vec.push("Phenylalanine"),
+                "UUA" | "UUG" => protein_vec.push("Leucine"),
+                "UCU" | "UCC" | "UCA" | "UCG" => protein_vec.push("Serine"),
+                "UAU" | "UAC" => protein_vec.push("Tyrosine"),
+                "UGU" | "UGC" => protein_vec.push("Cysteine"),
+                "UGG"  => protein_vec.push("Tryptophan"),
+                "UAA" | "UAG" | "UGA" => break,
+                _ => continue,
+            }
+        }
+
+        Ok(protein_vec)
     }
 }
 

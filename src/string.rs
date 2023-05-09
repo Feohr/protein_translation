@@ -4,8 +4,29 @@ use anyhow::Result;
 impl ProteinTranslate for String {
     type Item = String;
     fn protein_translate(self) -> Result<Vec<Self::Item>> {
-        todo!()
+        // Vector to hold the resulting proteins.
+        let mut protein_vec = Vec::<Self::Item>::new();
+        // To get the codon vector from a &str.
+        let mut codon_iter = codon(self)?.into_iter();
+
+        // Matching and entering the specific protein.
+        while let Some(ref codon) = codon_iter.next() {
+            match codon.to_uppercase().as_ref() {
+                "AUG" => protein_vec.push("Methionine".into()),
+                "UUU" | "UUC" => protein_vec.push("Phenylalanine".into()),
+                "UUA" | "UUG" => protein_vec.push("Leucine".into()),
+                "UCU" | "UCC" | "UCA" | "UCG" => protein_vec.push("Serine".into()),
+                "UAU" | "UAC" => protein_vec.push("Tyrosine".into()),
+                "UGU" | "UGC" => protein_vec.push("Cysteine".into()),
+                "UGG"  => protein_vec.push("Tryptophan".into()),
+                "UAA" | "UAG" | "UGA" => break,
+                _ => continue,
+            }
+        }
+
+        Ok(protein_vec)
     }
+
 }
 
 /// Program to take a stream of nucleotides and return vector of `&str` with valid codon length
