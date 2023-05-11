@@ -12,10 +12,9 @@
 //! let rna = "AUGUUUUCUUAAAUG".to_string();
 //! let protein_vec = rna.protein_translate().unwrap();
 //! assert_eq!(
-//!     vec![
-//!         "Methionine".to_string(), "Phenylalanine".to_string(), "Serine".to_string()],
-//!         protein_vec,
-//!     );
+//!     vec!["Methionine", "Phenylalanine", "Serine"],
+//!     protein_vec,
+//! );
 //! # }
 //! ```
 
@@ -39,23 +38,23 @@ where
 {
     /// Function that takes a `&str` or `String` and returns a `Vec<String>` with the appropriate
     /// protein names.
-    fn protein_translate(self) -> Result<Vec<String>> {
+    fn protein_translate(&'a self) -> Result<Vec<&'a str>> {
         // Vector to hold the resulting proteins.
-        let mut protein_vec = Vec::<String>::new();
+        let mut protein_vec = Vec::<&'a str>::new();
         // To get the codon vector from a &str.
         let mut codon_iter = self.codon()?.into_iter();
         // Matching and entering the specific protein.
         while let Some(ref codon) = codon_iter.next() {
             match codon.to_string().to_uppercase().as_ref() {
-                "AUG" => protein_vec.push("Methionine".into()),
-                "UUU" | "UUC" => protein_vec.push("Phenylalanine".into()),
-                "UUA" | "UUG" => protein_vec.push("Leucine".into()),
-                "UCU" | "UCC" | "UCA" | "UCG" => protein_vec.push("Serine".into()),
-                "UAU" | "UAC" => protein_vec.push("Tyrosine".into()),
-                "UGU" | "UGC" => protein_vec.push("Cysteine".into()),
-                "UGG" => protein_vec.push("Tryptophan".into()),
+                "AUG" => protein_vec.push("Methionine"),
+                "UUU" | "UUC" => protein_vec.push("Phenylalanine"),
+                "UUA" | "UUG" => protein_vec.push("Leucine"),
+                "UCU" | "UCC" | "UCA" | "UCG" => protein_vec.push("Serine"),
+                "UAU" | "UAC" => protein_vec.push("Tyrosine"),
+                "UGU" | "UGC" => protein_vec.push("Cysteine"),
+                "UGG" => protein_vec.push("Tryptophan"),
                 "UAA" | "UAG" | "UGA" => break,
-                _ => return Err(ProteinError::InvalidCodon(codon.into()).into()),
+                _ => return Err(ProteinError::InvalidCodon(codon.to_string()).into()),
             }
         }
         Ok(protein_vec)
@@ -63,17 +62,17 @@ where
 
     /// Program to take a stream of nucleotides and return `Vec<String>` with valid codon length
     /// and nucleotides.
-    fn codon(self) -> Result<Vec<String>> {
-        let mut codon_vec = Vec::<String>::new();
+    fn codon(&'a self) -> Result<Vec<&'a str>> {
+        let mut codon_vec = Vec::<&'a str>::new();
         // Iterating through chunks of codons, validating and pushing.
         for chunk in self.as_ref().as_bytes().chunks(CODON_CHUNK) {
             // Converting the given chunk to utf8. Techniacally you won't be getting this error as
             // you are converting the chunks from a &str in the first place which is made up of
             // valid utf8 characters. Still it is handled for reassurance.
-            let codon = String::from_utf8(chunk.to_vec())?;
+            let codon = std::str::from_utf8(chunk)?;
             // If codon is not in a pair of 3.
             if codon.len() < CODON_CHUNK {
-                return Err(ProteinError::InvalidCodonLen(codon).into());
+                return Err(ProteinError::InvalidCodonLen(codon.to_string()).into());
             }
             // Checking if the given codon chunk is valid.
             for nucleotide in codon.to_uppercase().chars() {
@@ -82,7 +81,7 @@ where
                 }
             }
             // Push if all satisfies.
-            codon_vec.push(codon.into());
+            codon_vec.push(&codon[..]);
         }
         Ok(codon_vec)
     }

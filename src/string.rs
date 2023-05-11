@@ -18,11 +18,11 @@ mod unit_string_tests {
         let rna = "AUGUUUUCUUAAAUG".to_string();
         assert_eq!(
             vec![
-                "AUG".to_string(),
-                "UUU".to_string(),
-                "UCU".to_string(),
-                "UAA".to_string(),
-                "AUG".to_string(),
+                "AUG",
+                "UUU",
+                "UCU",
+                "UAA",
+                "AUG",
             ],
             rna.codon().unwrap()
         );
