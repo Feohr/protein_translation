@@ -17,13 +17,7 @@ mod unit_str_tests {
     fn valid_codon() {
         let rna = "AUGUUUUCUUAAAUG";
         assert_eq!(
-            vec![
-                "AUG",
-                "UUU",
-                "UCU",
-                "UAA",
-                "AUG",
-            ],
+            vec!["AUG", "UUU", "UCU", "UAA", "AUG",],
             rna.codon().unwrap()
         );
     }
