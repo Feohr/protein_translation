@@ -29,14 +29,13 @@ pub(crate) const CODON_CHUNK: usize = 3_usize;
 // To hold valid nucleotides.
 pub(crate) const NUCLTD: [char; 5_usize] = ['A', 'G', 'C', 'T', 'U'];
 
-/// Trait is handled for both `&str` and `String` for ease of use. Could've used generics but it
-/// would be really tough to maintain and hard to manage. Moreover it can reduce code performance
-/// as well. Instead, the function can take both `&str` and `String` to return a `Vec<String>`.
+/// Trait is handled for both `&str` and `String` for ease of use. Instead, the function can take
+/// both `&str` and `String` to return a `Vec<&str>`.
 pub trait ProteinTranslate<'a>
 where
     Self: Sized + From<&'a str> + ToString + AsRef<str>,
 {
-    /// Function that takes a `&str` or `String` and returns a `Vec<String>` with the appropriate
+    /// Function that takes a `&str` or `String` and returns a `Vec<&str>` with the appropriate
     /// protein names.
     fn protein_translate(&'a self) -> Result<Vec<&'a str>> {
         // Vector to hold the resulting proteins.
@@ -60,7 +59,7 @@ where
         Ok(protein_vec)
     }
 
-    /// Program to take a stream of nucleotides and return `Vec<String>` with valid codon length
+    /// Program to take a stream of nucleotides and return `Vec<&str>` with valid codon length
     /// and nucleotides.
     fn codon(&'a self) -> Result<Vec<&'a str>> {
         let mut codon_vec = Vec::<&'a str>::new();
