@@ -2,11 +2,11 @@
 name = "protein_translation"
 authors = ["Mohammed Rehaan (Feohr)"]
 description = """A crate to translate &str or String of RNA sequence with nucleotide into a \
-Vec<String> of their appropriate protein names."""
+Vec<&str> of their appropriate protein names."""
 repository = "https://github.com/Feohr/protein_translation"
 license = "MIT"
 readme = "README.md"
-version = "0.2.1"
+version = "0.1.2"
 documentation = "https://docs.rs/protein_translation"
 keywords = ["rna", "protein", "parser", "codon", "nucleotide"]
 edition = "2021"
